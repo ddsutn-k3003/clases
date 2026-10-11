@@ -1,5 +1,7 @@
 ---
 theme: none
+colorSchema: light
+routerMode: hash
 addons:
   - slidev-addon-ddsi
 title: C01 - UML y Diagramas de Dominio

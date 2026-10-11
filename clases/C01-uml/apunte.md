@@ -33,15 +33,17 @@ El **diagrama de clases** permite visualizar la estructura de las clases que com
 
 ### Elementos principales
 
-Cada clase se representa con un rectángulo dividido en tres compartimentos, como se observa en la Figura 1. Comenzando desde arriba:
+Cada clase se representa con un rectángulo dividido en tres compartimentos, como se observa en la Figura 1.
 
-- **Nombre:** identifica a la clase.
-- **Atributos:** representan lo que la clase sabe. Se escriben como `visibilidad nombre: Tipo`.
-- **Métodos:** representan lo que la clase hace. Se escriben como `visibilidad nombre(parámetros): Tipo de retorno`.
+![Figura 1. Anatomía de una clase.](figuras/anatomia.png)
+
+Comenzando desde arriba, los compartimentos son:
+
+1. **Nombre:** identifica a la clase.
+2. **Atributos:** representan lo que la clase sabe. Se escriben como `visibilidad nombre: Tipo`.
+3. **Métodos:** representan lo que la clase hace. Se escriben como `visibilidad nombre(parámetros): Tipo de retorno`.
 
 La **visibilidad** indica desde dónde se puede acceder a un miembro: `+` pública, `-` privada y `#` protegida.
-
-![Figura 1. Anatomía de una clase.](figuras/anatomia.svg)
 
 Algunos elementos agregan información a la clase:
 
@@ -76,7 +78,7 @@ La **navegabilidad** se indica con una flecha abierta y señala qué clase conoc
 
 En la Figura 2 se representa el dominio de una tienda. Comenzando desde la izquierda, un Cliente realiza muchos Pedidos. Cada Pedido se compone de líneas de pedido, que no existen sin él, y cada línea hace referencia a un Producto. Siguiendo hacia la derecha, el Pedido se paga con un medio de pago. A continuación, se observa que MedioDePago es una interfaz y que Tarjeta y Efectivo la realizan. Por lo tanto, el Pedido puede tratar a ambas de manera polimórfica sin conocer cuál es la concreta.
 
-![Figura 2. Diagrama de clases de un pedido en una tienda.](figuras/clases.svg)
+![Figura 2. Diagrama de clases de un pedido en una tienda.](figuras/clases.png)
 
 ## ¿Qué es un diagrama de objetos?
 
@@ -89,7 +91,7 @@ El **diagrama de objetos** modela el sistema en un momento y con un estado concr
 
 En la Figura 3 se muestra una posible foto del sistema de la Figura 2. Comenzando desde la izquierda, el objeto ana es un Cliente que realiza el pedido1. Este pedido contiene dos líneas, una por cada producto, y se paga con la tarjeta t1.
 
-![Figura 3. Diagrama de objetos de un pedido en un instante.](figuras/objetos.svg)
+![Figura 3. Diagrama de objetos de un pedido en un instante.](figuras/objetos.png)
 
 ## ¿Qué es un diagrama de secuencia?
 
@@ -124,7 +126,7 @@ Las estructuras de control se representan con **fragmentos**, rectángulos que e
 
 En la Figura 4 se representa la confirmación de un pedido. Comenzando desde la izquierda, el Cliente envía el mensaje `confirmar()` al Pedido. A continuación, el Pedido calcula el total: por cada línea, le pide su subtotal y recibe el monto como respuesta, lo que se indica con el fragmento loop. Por último, el Pedido envía `pagar(total)` al medio de pago y recibe `true` como respuesta.
 
-![Figura 4. Diagrama de secuencia para confirmar un pedido.](figuras/secuencia.svg)
+![Figura 4. Diagrama de secuencia para confirmar un pedido.](figuras/secuencia.png)
 
 ## Consideraciones para el curso
 

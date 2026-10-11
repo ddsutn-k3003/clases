@@ -1,5 +1,7 @@
 ---
 theme: none
+colorSchema: light
+routerMode: hash
 addons:
   - slidev-addon-ddsi
 title: X00 - Prueba de tipografías

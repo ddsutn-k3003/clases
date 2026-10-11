@@ -28,7 +28,7 @@ export function listClasses() {
         entry,
         title,
         extra: d.name.startsWith('X'),
-        apunte: existsSync(join(dir, 'apunte.md')) ? join(dir, 'apunte.md') : null,
+        apunte: existsSync(join(dir, 'apunte.pdf')) ? dir : null, // apunte.docx y apunte.pdf se generan con `npm run apunte`
       }
     })
     .sort((a, b) => a.id.localeCompare(b.id))

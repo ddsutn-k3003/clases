@@ -31,9 +31,9 @@ footer{border-top:1px solid #ddd;padding:22px 24px 40px;text-align:center;color:
 
 function links(c, dist) {
   const l = [`<a class="main" href="${c.id}/">Diapositivas</a>`]
-  if (c.apunte) l.push(`<a href="${c.id}/apunte/">Apunte</a>`)
-  if (existsSync(join(dist, c.id, 'diapositivas.pdf'))) l.push(`<a href="${c.id}/diapositivas.pdf">PDF diapositivas</a>`)
-  if (c.apunte && existsSync(join(dist, c.id, 'apunte.pdf'))) l.push(`<a href="${c.id}/apunte.pdf">PDF apunte</a>`)
+  if (existsSync(join(dist, c.id, 'apunte.pdf'))) l.push(`<a href="${c.id}/apunte.pdf">Apunte (PDF)</a>`)
+  if (existsSync(join(dist, c.id, 'apunte.docx'))) l.push(`<a href="${c.id}/apunte.docx">Apunte (Word)</a>`)
+  if (existsSync(join(dist, c.id, 'diapositivas.pdf'))) l.push(`<a href="${c.id}/diapositivas.pdf">Diapositivas (PDF)</a>`)
   return l.join('')
 }
 
@@ -72,7 +72,7 @@ ${reg.map((c) => card(c, dist)).join('\n')}
 <div><kbd>←</kbd> <kbd>→</kbd> para avanzar y retroceder. Cada pulsación revela el siguiente paso.</div>
 <div><kbd>o</kbd> muestra todas las diapositivas en una grilla.</div>
 <div><kbd>f</kbd> pasa a pantalla completa.</div>
-<div>El apunte se puede imprimir o guardar como PDF desde el navegador.</div>
+<div>El apunte se descarga en PDF o en Word.</div>
 </div>
 ${
   extra.length

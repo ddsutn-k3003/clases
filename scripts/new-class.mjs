@@ -19,6 +19,8 @@ writeFileSync(
   join(dir, 'slides.md'),
   `---
 theme: none
+colorSchema: light
+routerMode: hash
 addons:
   - slidev-addon-ddsi
 title: ${num} - ${title}

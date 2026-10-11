@@ -9,7 +9,7 @@
     "build": "node scripts/build.mjs",
     "export": "node scripts/build.mjs --pdf",
     "new": "node scripts/new-class.mjs",
-    "figuras": "node scripts/figuras.mjs"
+    "apunte": "python3 scripts/docx/build.py"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
