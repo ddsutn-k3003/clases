@@ -2,8 +2,8 @@
 
 /* ===== Variables de diseño (fuente única para todas las clases) ===== */
 :root {
-  --font-display: 'Source Serif 4', Georgia, serif;
-  --font-body: 'Source Sans 3', system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   --ink: #1b1b1d;
@@ -118,9 +118,9 @@
 svg.uml { width: 100%; height: auto; display: block; overflow: visible; }
 svg.uml text { font-family: var(--font-body); fill: var(--ink); }
 svg.uml .halo { stroke: #fff; stroke-width: 7px; paint-order: stroke; stroke-linejoin: round; }
-svg.uml .t-name { font-size: 28px; font-weight: 700; }
-svg.uml .t-mem { font-size: 24px; }
-svg.uml .t-lbl { font-size: 24px; }
+svg.uml .t-name { font-size: 25px; font-weight: 700; }
+svg.uml .t-mem { font-size: 22px; }
+svg.uml .t-lbl { font-size: 22px; }
 svg.uml .t-mult { font-size: 24px; font-weight: 700; }
 svg.uml .t-cap { font-size: 26px; fill: var(--muted); }
 

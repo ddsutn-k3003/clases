@@ -4,7 +4,7 @@ import { defineMermaidSetup } from '@slidev/types'
 export default defineMermaidSetup(() => ({
   theme: 'base',
   themeVariables: {
-    fontFamily: "'Source Sans 3', system-ui, sans-serif",
+    fontFamily: "'Inter', system-ui, sans-serif",
     fontSize: '22px',
     primaryColor: '#fbe9eb',
     primaryBorderColor: '#7a1f2b',

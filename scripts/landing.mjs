@@ -32,7 +32,6 @@ footer{border-top:1px solid #ddd;padding:22px 24px 40px;text-align:center;color:
 function links(c, dist) {
   const l = [`<a class="main" href="${c.id}/">Diapositivas</a>`]
   if (existsSync(join(dist, c.id, 'apunte.pdf'))) l.push(`<a href="${c.id}/apunte.pdf">Apunte (PDF)</a>`)
-  if (existsSync(join(dist, c.id, 'apunte.docx'))) l.push(`<a href="${c.id}/apunte.docx">Apunte (Word)</a>`)
   if (existsSync(join(dist, c.id, 'diapositivas.pdf'))) l.push(`<a href="${c.id}/diapositivas.pdf">Diapositivas (PDF)</a>`)
   return l.join('')
 }
@@ -41,7 +40,6 @@ const card = (c, dist) => `<article class="card"><span class="num">${c.num}</spa
 
 export function renderLanding(clases, dist) {
   const reg = clases.filter((c) => !c.extra)
-  const extra = clases.filter((c) => c.extra)
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -61,28 +59,19 @@ ${CSS}
 <p class="meta">Diapositivas y apuntes de cada clase.</p>
 </div></header>
 <main>
-<h2>Clases</h2>
-<p class="sub">Cada clase tiene sus diapositivas y un apunte con la teoría completa. Las clases restantes se publican a medida que avanza la cursada.</p>
-<div class="grid">
-${reg.map((c) => card(c, dist)).join('\n')}
-</div>
-
 <h2>Cómo usar las diapositivas</h2>
 <div class="help">
 <div><kbd>←</kbd> <kbd>→</kbd> para avanzar y retroceder. Cada pulsación revela el siguiente paso.</div>
 <div><kbd>o</kbd> muestra todas las diapositivas en una grilla.</div>
 <div><kbd>f</kbd> pasa a pantalla completa.</div>
-<div>El apunte se descarga en PDF o en Word.</div>
+<div>El apunte de cada clase se descarga en PDF.</div>
 </div>
-${
-  extra.length
-    ? `<h2>Pruebas de diseño</h2>
-<p class="sub">Material interno para probar el aspecto de las diapositivas. No forma parte de la cursada.</p>
+
+<h2>Clases</h2>
+<p class="sub">Cada clase tiene sus diapositivas y un apunte con la teoría completa. Las clases restantes se publican a medida que avanza la cursada.</p>
 <div class="grid">
-${extra.map((c) => card(c, dist)).join('\n')}
-</div>`
-    : ''
-}
+${reg.map((c) => card(c, dist)).join('\n')}
+</div>
 <p class="note">Para estudiar se puede usar el apunte, los complementos del cronograma, la bibliografía que figura al final de cada clase y las notas tomadas en clase.</p>
 </main>
 <footer>Cátedra de Diseño de Sistemas de Información · UTN FRBA · <a href="https://github.com/ddsutn-k3003">github.com/ddsutn-k3003</a></footer>

@@ -7,7 +7,7 @@ export const CLASES_DIR = join(ROOT, 'clases')
 
 /**
  * Devuelve las clases (carpetas C01-nombre con slides.md), ordenadas por número.
- * Las carpetas X00-nombre son material de prueba (extra: true).
+ * Las carpetas X00-nombre quedan para material de prueba (extra: true).
  */
 export function listClasses() {
   if (!existsSync(CLASES_DIR)) return []
@@ -28,7 +28,7 @@ export function listClasses() {
         entry,
         title,
         extra: d.name.startsWith('X'),
-        apunte: existsSync(join(dir, 'apunte.pdf')) ? dir : null, // apunte.docx y apunte.pdf se generan con `npm run apunte`
+        apunte: existsSync(join(dir, 'apunte.pdf')) ? dir : null, // apunte.pdf se genera con `npm run apunte -- C01`
       }
     })
     .sort((a, b) => a.id.localeCompare(b.id))

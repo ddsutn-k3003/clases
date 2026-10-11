@@ -10,13 +10,13 @@
 
 ---
 
-Este repositorio reúne **todas las clases del curso** en un solo lugar. Cada clase tiene sus **diapositivas** (se abren en el navegador) y un **apunte** con la teoría completa, en PDF y en Word.
+Este repositorio reúne **todas las clases del curso** en un solo lugar. Cada clase tiene sus **diapositivas** (se abren en el navegador) y un **apunte** con la teoría completa, en PDF.
 
 ## 👩‍🎓 Si sos alumno
 
 Entrá a **https://ddsutn-k3003.github.io/clases/**. Vas a ver el índice con todas las clases, ordenadas por número.
 
-- Cada clase tiene las diapositivas, el apunte (en PDF y en Word) y el PDF de las diapositivas.
+- Cada clase tiene las diapositivas, el apunte en PDF y el PDF de las diapositivas.
 - Para estudiar podés usar el apunte, los complementos del cronograma, la bibliografía del final y tus notas de clase.
 - Navegá con las flechas del teclado (← →) o haciendo clic en los bordes de la pantalla.
 - Apretá `o` para ver un resumen con todas las diapositivas, y `f` para pantalla completa.
@@ -29,7 +29,7 @@ No necesitás instalar nada.
 ```
 clases/
 ├── clases/                  una carpeta por clase (C01-uml, C02-recursos, ...)
-│   └── C01-uml/             slides.md, apunte.md, apunte.docx, apunte.pdf y figuras/
+│   └── C01-uml/             slides.md, apunte.md, apunte.pdf y figuras/
 ├── shared/                  componentes, estilos y configuración comunes
 │   ├── components/
 │   ├── layouts/

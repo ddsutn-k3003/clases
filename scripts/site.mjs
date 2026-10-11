@@ -4,10 +4,10 @@ import { join } from 'node:path'
 import { ROOT } from './lib.mjs'
 
 const FONTS = [
-  ['source-sans-3', 'Source Sans 3', 'normal', 'source-sans-3-latin-wght-normal.woff2'],
-  ['source-sans-3', 'Source Sans 3', 'italic', 'source-sans-3-latin-wght-italic.woff2'],
-  ['source-serif-4', 'Source Serif 4', 'normal', 'source-serif-4-latin-wght-normal.woff2'],
-  ['source-serif-4', 'Source Serif 4', 'italic', 'source-serif-4-latin-wght-italic.woff2'],
+  ['inter', 'Inter', 'normal', 'inter-latin-wght-normal.woff2'],
+  ['inter', 'Inter', 'italic', 'inter-latin-wght-italic.woff2'],
+  ['fraunces', 'Fraunces', 'normal', 'fraunces-latin-wght-normal.woff2'],
+  ['fraunces', 'Fraunces', 'italic', 'fraunces-latin-wght-italic.woff2'],
   ['jetbrains-mono', 'JetBrains Mono', 'normal', 'jetbrains-mono-latin-wght-normal.woff2'],
 ]
 
@@ -28,7 +28,7 @@ export function fontFaces(fontBase) {
 }
 
 export const TOKENS = `
-:root{--font-display:'Source Serif 4',Georgia,serif;--font-body:'Source Sans 3',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,monospace;
+:root{--font-display:'Fraunces',Georgia,serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,monospace;
 --ink:#1b1b1d;--muted:#5a5557;--paper:#fff;--rojo:#b4182d;--bordo:#6d1327;--rosa:#fbe9eb;--rosa-borde:#7a1f2b;--gris:#f1efef;--gris-borde:#3b3b3f}
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--font-body);color:var(--ink);background:var(--paper);line-height:1.6}

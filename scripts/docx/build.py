@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera apunte.docx y apunte.pdf de una clase a partir de apunte.md.
+"""Genera apunte.pdf de una clase a partir de apunte.md (pasando por un .docx sobre la plantilla de la cátedra).
 
 Usa como plantilla un documento final de la cátedra (shared/plantillas/catedra.docx):
 conserva portada, encabezado, pie "N de M", estilos y numeración, y reemplaza el cuerpo.
@@ -334,7 +334,8 @@ def main():
         subprocess.run(["node", os.path.join(ROOT, "scripts", "svg2png.mjs"), os.path.join(d, "figuras")], check=True, cwd=ROOT)
     md = open(os.path.join(d, "apunte.md"), encoding="utf8").read()
     titulo_md = re.match(r"# (.+)", md).group(1).strip()
-    out = os.path.join(d, "apunte.docx")
+    tmpdir = tempfile.mkdtemp()
+    out = os.path.join(tmpdir, "apunte.docx")  # el Word es solo un paso intermedio: se publica el PDF
     paginas = {}
     for _ in range(3):  # a lo sumo tres pasadas: la numeración converge enseguida
         headings = construir(d, out, titulo_md, args, paginas)
@@ -346,7 +347,7 @@ def main():
             break
         paginas = nuevas
     os.replace(pdf, os.path.join(d, "apunte.pdf"))
-    print("Listo:", out)
+    print("Listo:", os.path.join(d, "apunte.pdf"))
 
 
 if __name__ == "__main__":

@@ -35,10 +35,8 @@ for (const c of clases) {
   })
   if (r.status !== 0) process.exit(r.status ?? 1)
 
-  // El apunte (Word y PDF) se genera aparte con `npm run apunte -- C01` y se sube al repositorio.
-  for (const f of ['apunte.pdf', 'apunte.docx']) {
-    if (existsSync(join(c.dir, f))) copyFileSync(join(c.dir, f), join(out, f))
-  }
+  // El apunte (PDF) se genera aparte con `npm run apunte -- C01` y se sube al repositorio.
+  if (existsSync(join(c.dir, 'apunte.pdf'))) copyFileSync(join(c.dir, 'apunte.pdf'), join(out, 'apunte.pdf'))
 
   if (withPdf) {
     // Un PDF que falla no debe impedir publicar el sitio.

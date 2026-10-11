@@ -22,7 +22,7 @@ const colW = computed(() => props.w / props.participants.length)
 const px = (id: string) => colW.value * (props.participants.findIndex((p) => p.id === id) + 0.5)
 const rowY = (i: number) => HEAD + 52 + i * props.rowH
 const hTotal = computed(() => rowY(props.messages.length) + 20)
-const boxW = computed(() => Math.min(colW.value - 24, 230))
+const boxW = computed(() => Math.min(colW.value - 16, 230))
 const click = (i: number) => props.startClick + i
 
 const created = computed(() => {
