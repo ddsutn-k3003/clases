@@ -18,26 +18,44 @@ mkdirSync(dir, { recursive: true })
 writeFileSync(
   join(dir, 'slides.md'),
   `---
-theme: default
+theme: none
+addons:
+  - slidev-addon-ddsi
 title: ${num} - ${title}
 info: |
   Diseño de Sistemas de Información - K3003 - UTN FRBA
-class: text-center
-transition: slide-left
-mdc: true
-addons:
-  - slidev-addon-ddsi
-addons:
-  - slidev-addon-ddsi
+canvasWidth: 1280
+aspectRatio: 16/9
+transition: fade
+layout: cover
 ---
+
+<div class="kicker">Clase ${Number(num.slice(1))}</div>
 
 # ${title}
 
-Diseño de Sistemas de Información · K3003 · UTN FRBA
+<div class="sub">Subtítulo de la clase</div>
 
 ---
 
-# Primera slide
+# Primera diapositiva
+
+<p class="lead">Una idea por diapositiva.</p>
 `,
 )
-console.log(`Creada ${dir}`)
+writeFileSync(
+  join(dir, 'apunte.md'),
+  `# ${title}
+
+## Objetivo
+
+Una oración que diga qué se busca comprender con esta clase.
+
+## Introducción
+
+## Resumen
+
+## Referencias
+`,
+)
+console.log(`Creada ${dir} (slides.md y apunte.md)`)

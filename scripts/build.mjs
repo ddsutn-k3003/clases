@@ -1,70 +1,86 @@
 // Construye todas las clases en dist/<id>/ y genera dist/index.html.
-// Uso: npm run build            -> HTML de todas las clases
-//      npm run export          -> además exporta PDF de cada clase
+// Uso: npm run build                 -> HTML de diapositivas y apuntes
+//      npm run export                -> además PDF de diapositivas y de apuntes
+//      node scripts/build.mjs C01    -> solo una clase
 //      BASE=/clases/ npm run build   (base de GitHub Pages; por defecto /clases/)
+//      CHROMIUM_PATH=...             (navegador para los PDF de apuntes, opcional)
 import { spawnSync } from 'node:child_process'
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs'
+import { mkdirSync, writeFileSync, existsSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { listClasses, ROOT } from './lib.mjs'
+import { copyFonts } from './site.mjs'
+import { renderApunte } from './apunte.mjs'
+import { renderLanding } from './landing.mjs'
 
-const withPdf = process.argv.includes('--pdf')
+const args = process.argv.slice(2)
+const withPdf = args.includes('--pdf')
+const only = args.find((a) => /^[CX]\d{2}/.test(a))
 const base = (process.env.BASE ?? '/clases/').replace(/\/?$/, '/')
 const dist = join(ROOT, 'dist')
+rmSync(dist, { recursive: true, force: true })
 mkdirSync(dist, { recursive: true })
+copyFonts(dist)
 
-const clases = listClasses()
-if (clases.length === 0) {
+const todas = listClasses()
+if (todas.length === 0) {
   console.error('No hay clases en clases/')
   process.exit(1)
+}
+const clases = only ? todas.filter((c) => c.id.startsWith(only)) : todas
+
+let browser = null
+async function apuntePdf(htmlPath, pdfPath) {
+  const { chromium } = await import('playwright-chromium')
+  browser ??= await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined })
+  const page = await browser.newPage()
+  await page.goto(`file://${htmlPath}`)
+  await page.evaluate(() => document.fonts.ready)
+  await page.pdf({
+    path: pdfPath,
+    format: 'A4',
+    printBackground: true,
+    displayHeaderFooter: true,
+    headerTemplate: '<span></span>',
+    footerTemplate:
+      '<div style="width:100%;font-size:9px;font-family:sans-serif;text-align:center;color:#555"><span class="pageNumber"></span> de <span class="totalPages"></span></div>',
+    margin: { top: '20mm', bottom: '22mm', left: '18mm', right: '18mm' },
+  })
+  await page.close()
 }
 
 for (const c of clases) {
   console.log(`\n== ${c.id} ==`)
   const out = join(dist, c.id)
-  let r = spawnSync(
-    'npx',
-    ['slidev', 'build', c.entry, '--base', `${base}${c.id}/`, '--out', out],
-    { cwd: ROOT, stdio: 'inherit' },
-  )
+  let r = spawnSync('npx', ['slidev', 'build', c.entry, '--base', `${base}${c.id}/`, '--out', out], {
+    cwd: ROOT,
+    stdio: 'inherit',
+  })
   if (r.status !== 0) process.exit(r.status ?? 1)
+
+  if (c.apunte) {
+    const dir = join(out, 'apunte')
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(join(dir, 'index.html'), renderApunte(c.apunte, { id: c.id, title: c.title }))
+    console.log(`Apunte: ${c.id}/apunte/`)
+  }
+
   if (withPdf) {
-    r = spawnSync(
-      'npx',
-      ['slidev', 'export', c.entry, '--output', join(dist, `${c.id}.pdf`)],
-      { cwd: ROOT, stdio: 'inherit' },
-    )
-    if (r.status !== 0) process.exit(r.status ?? 1)
+    // Un PDF que falla no debe impedir publicar el sitio.
+    r = spawnSync('npx', ['slidev', 'export', c.entry, '--output', join(out, 'diapositivas.pdf')], {
+      cwd: ROOT,
+      stdio: 'inherit',
+    })
+    if (r.status !== 0) console.warn(`(!) No se pudo exportar el PDF de diapositivas de ${c.id}`)
+    if (c.apunte) {
+      try {
+        await apuntePdf(join(out, 'apunte', 'index.html'), join(out, 'apunte.pdf'))
+      } catch (e) {
+        console.warn(`(!) No se pudo exportar el PDF del apunte de ${c.id}: ${e.message}`)
+      }
+    }
   }
 }
+if (browser) await browser.close()
 
-const rows = clases
-  .map((c) => {
-    const pdf = existsSync(join(dist, `${c.id}.pdf`)) ? ` · <a href="${c.id}.pdf">PDF</a>` : ''
-    return `<li><a href="${c.id}/">${c.title}</a>${pdf}</li>`
-  })
-  .join('\n      ')
-
-writeFileSync(
-  join(dist, 'index.html'),
-  `<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DDSI K3003 - Clases</title>
-    <style>
-      body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 3rem auto; padding: 0 1rem; line-height: 1.6; }
-      li { margin: .35rem 0; }
-    </style>
-  </head>
-  <body>
-    <h1>Diseño de Sistemas de Información</h1>
-    <p>Curso K3003 · UTN FRBA</p>
-    <ul>
-      ${rows}
-    </ul>
-  </body>
-</html>
-`,
-)
+writeFileSync(join(dist, 'index.html'), renderLanding(todas, dist))
 console.log('\nListo: dist/index.html')

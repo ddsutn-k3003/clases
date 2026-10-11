@@ -1,4 +1,128 @@
-/* Estilos compartidos por todas las clases. */
+@import './fonts.css';
+
+/* ===== Variables de diseño (fuente única para todas las clases) ===== */
 :root {
-  --slidev-theme-primary: #2563eb;
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --ink: #1b1b1d;
+  --muted: #5a5557;
+  --paper: #ffffff;
+  --rojo: #b4182d;
+  --bordo: #6d1327;
+  --rosa: #fbe9eb;
+  --rosa-borde: #7a1f2b;
+  --gris: #f1efef;
+  --gris-borde: #3b3b3f;
+  --azul: #1f4e79;
+  --azul-fondo: #e3eef8;
 }
+
+/* ===== Base del canvas (1280 x 720) ===== */
+.slidev-layout {
+  font-family: var(--font-body);
+  font-size: 34px;
+  line-height: 1.35;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 44px 72px 56px;
+  box-sizing: border-box;
+}
+.slidev-layout h1, .slidev-layout h2, .slidev-layout h3 {
+  font-family: var(--font-display);
+  color: var(--bordo);
+  font-weight: 650;
+  line-height: 1.1;
+  margin: 0;
+}
+.slidev-layout h1 { font-size: 58px; margin-bottom: 30px; }
+.slidev-layout h1::after {
+  content: ''; display: block; width: 84px; height: 7px; background: var(--rojo); margin-top: 14px; border-radius: 2px;
+}
+.slidev-layout h2 { font-size: 42px; margin-bottom: 16px; }
+.slidev-layout h3 { font-size: 34px; margin-bottom: 8px; }
+.slidev-layout p { margin: 0 0 14px; }
+.slidev-layout strong { font-weight: 700; }
+.slidev-layout em { color: var(--muted); }
+.slidev-layout a { color: var(--rojo); text-decoration: none; border-bottom: 2px solid currentColor; }
+
+.slidev-layout ul { list-style: none; padding: 0; margin: 0 0 14px; }
+.slidev-layout ul > li { position: relative; padding-left: 38px; margin: 10px 0; }
+.slidev-layout ul > li::before {
+  content: ''; position: absolute; left: 4px; top: 0.55em; width: 14px; height: 14px; background: var(--rojo); border-radius: 3px;
+}
+.slidev-layout ol { margin: 0 0 14px; padding-left: 44px; }
+.slidev-layout ol > li { margin: 10px 0; padding-left: 6px; }
+.slidev-layout ol > li::marker { color: var(--rojo); font-weight: 700; }
+
+.slidev-layout code, .slidev-layout kbd {
+  font-family: var(--font-mono); font-size: 0.82em; background: var(--gris); padding: 2px 8px; border-radius: 6px;
+}
+.slidev-layout .slidev-code, .slidev-layout pre code { font-family: var(--font-mono); font-size: 26px; line-height: 1.45; }
+
+.slidev-layout table { border-collapse: collapse; font-size: 28px; }
+.slidev-layout th { background: var(--rosa); color: var(--bordo); text-align: left; padding: 8px 18px; border: 2px solid var(--gris-borde); }
+.slidev-layout td { padding: 8px 18px; border: 2px solid #b7b7b7; }
+
+/* ===== Layouts ===== */
+.layout-foot {
+  position: absolute; left: 72px; right: 72px; bottom: 18px; display: flex; justify-content: space-between;
+  font-size: 18px; color: var(--muted); letter-spacing: .02em;
+}
+.layout-foot .num { font-weight: 700; color: var(--rojo); }
+
+.layout-cover { background: var(--paper); display: flex; flex-direction: column; justify-content: center; padding-left: 130px; position: relative; }
+.layout-cover::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 46px; background: var(--rojo); }
+.layout-cover::after { content: ''; position: absolute; left: 46px; top: 0; bottom: 0; width: 14px; background: var(--bordo); }
+.layout-cover h1 { font-size: 84px; margin-bottom: 26px; }
+.layout-cover .kicker { font-size: 28px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rojo); margin-bottom: 22px; }
+.layout-cover .sub { font-size: 36px; color: var(--ink); max-width: 900px; }
+.layout-cover .meta { position: absolute; left: 130px; bottom: 44px; font-size: 22px; color: var(--muted); }
+
+.layout-section { position: relative; display: flex; flex-direction: column; justify-content: center; padding-left: 130px; background: var(--rosa); }
+.layout-section::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 46px; background: var(--rojo); }
+.layout-section h1 { font-size: 80px; margin-bottom: 0; }
+.layout-section h1::after { display: none; }
+.layout-section .kicker { font-size: 26px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rojo); margin-bottom: 16px; }
+
+.layout-center { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.layout-center h1::after { margin-left: auto; margin-right: auto; }
+
+.layout-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.layout-cols > .cols-head { grid-column: 1 / -1; }
+
+/* ===== Utilidades de contenido ===== */
+.cards { display: grid; gap: 22px; margin-top: 10px; }
+.cards.c2 { grid-template-columns: repeat(2, 1fr); }
+.cards.c3 { grid-template-columns: repeat(3, 1fr); }
+.cards.c4 { grid-template-columns: repeat(4, 1fr); }
+.card {
+  border: 3px solid var(--rosa-borde); background: var(--rosa); border-radius: 14px; padding: 18px 22px;
+  font-size: 28px; line-height: 1.28;
+}
+.card .big { display: block; font-family: var(--font-display); font-size: 38px; font-weight: 700; color: var(--bordo); margin-bottom: 6px; }
+.card.gris { background: var(--gris); border-color: var(--gris-borde); }
+.card.azul { background: var(--azul-fondo); border-color: var(--azul); }
+.card.azul .big { color: var(--azul); }
+.lead { font-size: 40px; line-height: 1.25; font-family: var(--font-display); color: var(--ink); }
+.small { font-size: 26px; color: var(--muted); }
+.chip {
+  display: inline-block; padding: 6px 18px; margin: 6px 8px 6px 0; border-radius: 999px; font-size: 28px; font-weight: 600;
+  border: 3px solid var(--gris-borde); color: var(--gris-borde); background: var(--paper);
+}
+.chip.on { background: var(--rojo); border-color: var(--rojo); color: #fff; }
+.refs li { font-size: 26px; margin: 8px 0; }
+
+/* ===== Diagramas UML (SVG) ===== */
+svg.uml { width: 100%; height: auto; display: block; overflow: visible; }
+svg.uml text { font-family: var(--font-body); fill: var(--ink); }
+svg.uml .halo { stroke: #fff; stroke-width: 7px; paint-order: stroke; stroke-linejoin: round; }
+svg.uml .t-name { font-size: 28px; font-weight: 700; }
+svg.uml .t-mem { font-size: 24px; }
+svg.uml .t-lbl { font-size: 24px; }
+svg.uml .t-mult { font-size: 24px; font-weight: 700; }
+svg.uml .t-cap { font-size: 26px; fill: var(--muted); }
+
+/* El layout ocupa todo el slide */
+.slidev-layout { position: relative; width: 100%; height: 100%; }

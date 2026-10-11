@@ -5,18 +5,31 @@ import { fileURLToPath } from 'node:url'
 export const ROOT = resolve(fileURLToPath(import.meta.url), '..', '..')
 export const CLASES_DIR = join(ROOT, 'clases')
 
-/** Devuelve las clases (carpetas C01-nombre con slides.md), ordenadas por número. */
+/**
+ * Devuelve las clases (carpetas C01-nombre con slides.md), ordenadas por número.
+ * Las carpetas X00-nombre son material de prueba (extra: true).
+ */
 export function listClasses() {
   if (!existsSync(CLASES_DIR)) return []
   return readdirSync(CLASES_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^C\d{2}-/.test(d.name))
+    .filter((d) => d.isDirectory() && /^[CX]\d{2}-/.test(d.name))
     .filter((d) => existsSync(join(CLASES_DIR, d.name, 'slides.md')))
     .map((d) => {
-      const entry = join(CLASES_DIR, d.name, 'slides.md')
+      const dir = join(CLASES_DIR, d.name)
+      const entry = join(dir, 'slides.md')
       const text = readFileSync(entry, 'utf8')
       const m = text.match(/^---\n([\s\S]*?)\n---/)
-      const title = m?.[1].match(/^title:\s*(.+)$/m)?.[1]?.trim() ?? d.name
-      return { id: d.name, entry, title }
+      const rawTitle = m?.[1].match(/^title:\s*(.+)$/m)?.[1]?.trim() ?? d.name
+      const title = rawTitle.replace(/^[CX]\d{2}\s*-\s*/, '')
+      return {
+        id: d.name,
+        num: d.name.slice(0, 3),
+        dir,
+        entry,
+        title,
+        extra: d.name.startsWith('X'),
+        apunte: existsSync(join(dir, 'apunte.md')) ? join(dir, 'apunte.md') : null,
+      }
     })
     .sort((a, b) => a.id.localeCompare(b.id))
 }
