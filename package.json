@@ -1,0 +1,27 @@
+{
+  "name": "clases",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Clases de Diseño de Sistemas de Información (DDSI) - K3003 - UTN FRBA",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "export": "node scripts/build.mjs --pdf",
+    "new": "node scripts/new-class.mjs"
+  },
+  "dependencies": {
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.64.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "shared"
+  ]
+}

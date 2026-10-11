@@ -1,0 +1,8 @@
+{
+  "name": "slidev-addon-ddsi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "keywords": ["slidev-addon", "slidev"],
+  "description": "Componentes, estilos y configuración compartidos por todas las clases de DDSI"
+}
