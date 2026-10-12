@@ -12,8 +12,8 @@ type A = { p: string; from: number; to: number }
 type F = { op: string; guard?: string; from: number; to: number; p1: string; p2: string }
 
 const props = withDefaults(
-  defineProps<{ participants: P[]; messages: M[]; activations?: A[]; fragments?: F[]; w?: number; rowH?: number; startClick?: number }>(),
-  { activations: () => [], fragments: () => [], w: 1136, rowH: 76, startClick: 1 },
+  defineProps<{ participants: P[]; messages: M[]; activations?: A[]; fragments?: F[]; w?: number; rowH?: number; startClick?: number; labelSize?: number }>(),
+  { activations: () => [], fragments: () => [], w: 1136, rowH: 76, startClick: 1, labelSize: 25 },
 )
 
 const uid = 's' + Math.random().toString(36).slice(2, 8)
@@ -86,14 +86,16 @@ const frag = (f: F) => {
         <template v-if="p.actor">
           <circle :cx="px(p.id)" cy="14" r="11" fill="#fbe9eb" stroke="#7a1f2b" stroke-width="3.5" />
           <path :d="`M${px(p.id)} 25 V52 M${px(p.id) - 22} 36 H${px(p.id) + 22} M${px(p.id)} 52 L${px(p.id) - 18} 76 M${px(p.id)} 52 L${px(p.id) + 18} 76`" fill="none" stroke="#7a1f2b" stroke-width="3.5" stroke-linecap="round" />
-          <text :x="px(p.id)" y="100" text-anchor="middle" class="t-name" style="font-size: 25px">{{ p.label }}</text>
+          <text :x="px(p.id)" y="100" text-anchor="middle" class="t-name" :style="{ fontSize: labelSize + 'px' }">{{ p.label }}</text>
         </template>
         <template v-else>
           <rect :x="px(p.id) - boxW / 2" y="6" :width="boxW" height="58" rx="8" fill="#fbe9eb" stroke="#7a1f2b" stroke-width="3.5" />
-          <text :x="px(p.id)" y="44" text-anchor="middle" class="t-name" style="font-size: 25px">{{ p.label }}</text>
+          <text :x="px(p.id)" y="44" text-anchor="middle" class="t-name" :style="{ fontSize: labelSize + 'px' }">{{ p.label }}</text>
         </template>
       </g>
-      <line :x1="px(p.id)" :x2="px(p.id)" :y1="lifeline(p).y1" :y2="lifeline(p).y2" stroke="#6f6f6f" stroke-width="3" stroke-dasharray="11 9" />
+      <!-- la línea de vida de un objeto creado aparece junto con el mensaje que lo crea -->
+      <line v-if="p.id in created" v-click="click(created[p.id])" :x1="px(p.id)" :x2="px(p.id)" :y1="lifeline(p).y1" :y2="lifeline(p).y2" stroke="#6f6f6f" stroke-width="3" stroke-dasharray="11 9" />
+      <line v-else :x1="px(p.id)" :x2="px(p.id)" :y1="lifeline(p).y1" :y2="lifeline(p).y2" stroke="#6f6f6f" stroke-width="3" stroke-dasharray="11 9" />
     </g>
 
     <!-- fragmentos -->
@@ -123,7 +125,7 @@ const frag = (f: F) => {
       <!-- cabecera de un objeto creado -->
       <g v-if="m.kind === 'create'">
         <rect :x="px(m.to) - boxW / 2" :y="rowY(i) - 31" :width="boxW" height="62" rx="8" fill="#fbe9eb" stroke="#7a1f2b" stroke-width="3.5" />
-        <text :x="px(m.to)" :y="rowY(i) + 9" text-anchor="middle" class="t-name" style="font-size: 25px">{{ participants.find((p) => p.id === m.to)?.label }}</text>
+        <text :x="px(m.to)" :y="rowY(i) + 9" text-anchor="middle" class="t-name" :style="{ fontSize: labelSize + 'px' }">{{ participants.find((p) => p.id === m.to)?.label }}</text>
       </g>
       <path
         :d="geom(m, i).d"

@@ -12,6 +12,7 @@
     "apunte": "python3 scripts/docx/build.py"
   },
   "dependencies": {
+    "@fontsource-variable/caveat": "^5.3.0",
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",

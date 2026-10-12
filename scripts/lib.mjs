@@ -21,6 +21,9 @@ export function listClasses() {
       const m = text.match(/^---\n([\s\S]*?)\n---/)
       const rawTitle = m?.[1].match(/^title:\s*(.+)$/m)?.[1]?.trim() ?? d.name
       const title = rawTitle.replace(/^[CX]\d{2}\s*-\s*/, '')
+      // C01-uml-v2 es una versión alternativa de C01-uml: comparte su apunte.
+      const alt = d.name.match(/^(.*)-v2$/)
+      const apunteDir = alt ? join(CLASES_DIR, alt[1]) : dir
       return {
         id: d.name,
         num: d.name.slice(0, 3),
@@ -28,7 +31,8 @@ export function listClasses() {
         entry,
         title,
         extra: d.name.startsWith('X'),
-        apunte: existsSync(join(dir, 'apunte.pdf')) ? dir : null, // apunte.pdf se genera con `npm run apunte -- C01`
+        variantOf: alt ? alt[1] : null,
+        apunte: existsSync(join(apunteDir, 'apunte.pdf')) ? join(apunteDir, 'apunte.pdf') : null, // apunte.pdf se genera con `npm run apunte -- C01`
       }
     })
     .sort((a, b) => a.id.localeCompare(b.id))

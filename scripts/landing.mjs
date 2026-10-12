@@ -22,6 +22,8 @@ h2:first-child{margin-top:0}
 .links a{font-size:15px;font-weight:600;text-decoration:none;border:2px solid var(--rosa-borde);border-radius:999px;padding:3px 14px;color:var(--bordo)}
 .links a.main{background:var(--rojo);border-color:var(--rojo);color:#fff}
 .links a:hover{background:var(--bordo);border-color:var(--bordo);color:#fff}
+.ver{display:flex;flex-direction:column;gap:6px}
+.ver-t{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .help{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
 .help div{background:var(--gris);border-left:5px solid var(--rojo);padding:10px 14px;border-radius:4px}
 kbd{font-family:var(--font-mono);font-size:.85em;background:#fff;border:1.5px solid var(--gris-borde);border-bottom-width:3px;border-radius:5px;padding:0 6px}
@@ -31,15 +33,26 @@ footer{border-top:1px solid #ddd;padding:22px 24px 40px;text-align:center;color:
 
 function links(c, dist) {
   const l = [`<a class="main" href="${c.id}/">Diapositivas</a>`]
-  if (existsSync(join(dist, c.id, 'apunte.pdf'))) l.push(`<a href="${c.id}/apunte.pdf">Apunte (PDF)</a>`)
   if (existsSync(join(dist, c.id, 'diapositivas.pdf'))) l.push(`<a href="${c.id}/diapositivas.pdf">Diapositivas (PDF)</a>`)
   return l.join('')
 }
 
-const card = (c, dist) => `<article class="card"><span class="num">${c.num}</span><h3>${escapeHtml(c.title)}</h3><div class="links">${links(c, dist)}</div></article>`
+const apunteLink = (c, dist) => (existsSync(join(dist, c.id, 'apunte.pdf')) ? `<a href="${c.id}/apunte.pdf">Apunte (PDF)</a>` : '')
+
+function card(c, variantes, dist) {
+  if (variantes.length === 0) {
+    return `<article class="card"><span class="num">${c.num}</span><h3>${escapeHtml(c.title)}</h3><div class="links">${links(c, dist)}${apunteLink(c, dist)}</div></article>`
+  }
+  // Clase con una versión alternativa de las diapositivas (para comparar)
+  const filas = [['Versión actual', c], ['Versión nueva', variantes[0]]]
+    .map(([t, x]) => `<div class="ver"><span class="ver-t">${t}</span><div class="links">${links(x, dist)}</div></div>`)
+    .join('')
+  return `<article class="card"><span class="num">${c.num}</span><h3>${escapeHtml(c.title)}</h3>${filas}<div class="links">${apunteLink(c, dist)}</div></article>`
+}
 
 export function renderLanding(clases, dist) {
-  const reg = clases.filter((c) => !c.extra)
+  const reg = clases.filter((c) => !c.extra && !c.variantOf)
+  const variantesDe = (c) => clases.filter((v) => v.variantOf === c.id)
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -70,7 +83,7 @@ ${CSS}
 <h2>Clases</h2>
 <p class="sub">Cada clase tiene sus diapositivas y un apunte con la teoría completa. Las clases restantes se publican a medida que avanza la cursada.</p>
 <div class="grid">
-${reg.map((c) => card(c, dist)).join('\n')}
+${reg.map((c) => card(c, variantesDe(c), dist)).join('\n')}
 </div>
 <p class="note">Para estudiar se puede usar el apunte, los complementos del cronograma, la bibliografía que figura al final de cada clase y las notas tomadas en clase.</p>
 </main>
