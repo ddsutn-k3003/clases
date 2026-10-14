@@ -49,4 +49,18 @@ for (const c of clases) {
 }
 
 writeFileSync(join(dist, 'index.html'), renderLanding(todas, dist))
+
+// Manifiesto que lee la portada del curso (ddsutn-k3003.github.io) para armar sus secciones.
+const manifiesto = todas
+  .filter((c) => !c.extra)
+  .map((c) => ({
+    id: c.id,
+    num: c.num,
+    title: c.title,
+    variantOf: c.variantOf,
+    slides: `${c.id}/`,
+    apunte: c.apunte ? `${c.id}/apunte.pdf` : null,
+    pdf: existsSync(join(dist, c.id, 'diapositivas.pdf')) ? `${c.id}/diapositivas.pdf` : null,
+  }))
+writeFileSync(join(dist, 'classes.json'), JSON.stringify({ generated: new Date().toISOString(), classes: manifiesto }, null, 2))
 console.log('\nListo: dist/index.html')
